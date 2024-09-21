@@ -6,20 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.contentValuesOf
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.devrhyan.githubsearch.R
 import com.devrhyan.githubsearch.models.UserItem
+import kotlin.coroutines.coroutineContext
 
 class ProjectAdapter() : Adapter<ProjectAdapter.ProjectViewHolder>() {
 
     private var projectList : List<UserItem> = listOf()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setUserProjectList(list : MutableList<UserItem>) {
+    fun setUserProjectList(list : List<UserItem>) {
         projectList = list;
         notifyDataSetChanged()
     }
+
+    var sharedLinkList : (UserItem) -> Unit = {}
 
     inner class ProjectViewHolder(view : View) : RecyclerView.ViewHolder(view) {
         val projectName : TextView = view.findViewById(R.id.projectName)
@@ -41,7 +46,7 @@ class ProjectAdapter() : Adapter<ProjectAdapter.ProjectViewHolder>() {
         holder.projectName.text = listItem.name
 
         holder.shareProjectButton.setOnClickListener {
-
+             sharedLinkList(listItem)
         }
     }
 }
